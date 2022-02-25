@@ -77,11 +77,34 @@ The _Sidechain Launch Kit_ is a commandline tool that simplifies setting up fede
 
 [Sidechain Launch Kit >](https://github.com/xpring-eng/sidechain-launch-kit)
 
+## Frequently Asked Questions
+
+1. Do sidechains use their own nodes or validators?
+
+    Yes. Sidechains are independent ledgers with their own set of servers (nodes and validators).
+
+2. Can I clone the `rippled` UNL to sync my sidechain server with?
+
+    No. Sidechains are independent ledgers with their own set of nodes and validators, and must use their own UNL.
+
+3. So, would mainchain validators need to vote on sidechain transactions?
+
+    No, the servers on the mainchain have no knowledge of the sidechain and federation on the sidechain. For servers on the mainchain, the door account is just another multi-signature account on the mainchain.
+
+4. Can I roll up transactions and have an entry on the mainchain?
+
+    Transactions on a sidechain are not visible to the servers on the mainchain. Only transactions submitted from the sidechain door account to a destination on the mainchain are visible to the servers on the main chain and will have an entry on the mainchain. 
+
+5. When will sidechains be available?
+
+    Sidechains are available to develop and test starting XRPL 1.8. You can connect sidechains to the XRP Ledger Testnet, Devnet, or Mainnet as soon as network servers upgrade to XRPL 1.8.
 
 ## See Also
 
 - **Concepts:**
     - [Federated Sidechains Video](https://www.youtube.com/embed/NhH4LM8NxgY)
+- **References:**
+    - [Sidechains API](federator_info.html)
 
 
 
