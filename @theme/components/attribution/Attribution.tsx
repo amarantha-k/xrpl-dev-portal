@@ -7,6 +7,19 @@ export type Contributor = {
   profileUrl: string;
 };
 
+/** Minimal shape of a GitHub commit author/committer object in the API response */
+type GitHubActor = {
+  login: string;
+  avatar_url: string;
+  html_url: string;
+};
+
+/** Minimal shape of a single GitHub commit item returned by the commits API */
+type GitHubCommit = {
+  author: GitHubActor | null;
+  committer: GitHubActor | null;
+};
+
 export type AttributionProps = {
   /** Full GitHub edit/tree URL, e.g. https://github.com/XRPLF/xrpl-dev-portal/tree/master/docs/foo.md */
   editPageUrl: string;
@@ -45,19 +58,21 @@ async function fetchContributors(editPageUrl: string): Promise<Contributor[]> {
     });
     if (!response.ok) return [];
 
-    const commits: any[] = await response.json();
+    const commits: GitHubCommit[] = await response.json();
 
     const seen = new Set<string>();
     const contributors: Contributor[] = [];
 
     for (const commit of commits) {
-      const author = commit.author;
-      if (!author || !author.login || seen.has(author.login)) continue;
-      seen.add(author.login);
+      // Prefer the commit author; fall back to the committer (e.g. bots or
+      // commits made before the author had a GitHub account).
+      const actor = commit.author ?? commit.committer;
+      if (!actor || !actor.login || seen.has(actor.login)) continue;
+      seen.add(actor.login);
       contributors.push({
-        login: author.login,
-        avatarUrl: author.avatar_url,
-        profileUrl: author.html_url,
+        login: actor.login,
+        avatarUrl: actor.avatar_url,
+        profileUrl: actor.html_url,
       });
     }
 
@@ -102,7 +117,7 @@ export function Attribution({ editPageUrl }: AttributionProps): JSX.Element | nu
               title={contributor.login}
             >
               <ContributorAvatar
-                src={`${contributor.avatarUrl}&s=48`}
+                src={`${contributor.avatarUrl}&s=64`}
                 alt={contributor.login}
                 loading="lazy"
                 width={32}
