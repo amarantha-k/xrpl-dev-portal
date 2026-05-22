@@ -1,0 +1,47 @@
+{
+  "skill_name": "xrpl-payments",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm building an invoice payment agent in Python. It needs to: (1) load a wallet from an env var called XRPL_WALLET_SEED, (2) check the XRP balance on testnet, (3) send 50 XRP to rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe, and (4) print the transaction hash. Show me complete, runnable code.",
+      "expected_output": "Complete Python script using xrpl-py that loads wallet from env var, checks balance with drops_to_xrp, sends 50 XRP using xrp_to_drops and submit_and_wait, and prints tesSUCCESS result and hash.",
+      "files": [],
+      "expectations": [
+        "Uses xrp_to_drops(50) for the payment amount — not a raw float or integer",
+        "Uses submit_and_wait (not submit) for the payment transaction",
+        "Loads wallet from os.environ['XRPL_WALLET_SEED'] or os.environ.get()",
+        "Connects to the testnet RPC endpoint (s.altnet.rippletest.net)",
+        "Prints or returns the transaction hash from response.result['hash']",
+        "Uses drops_to_xrp when displaying the balance"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My AI agent needs to pay vendors in RLUSD on XRPL testnet. The wallet seed is in XRPL_WALLET_SEED. Walk me through (1) setting up the RLUSD trust line and (2) sending 250 RLUSD to rN7n3473SaZBCG4dFL83w7PB5AMtQFfDgE. Give me Python code for both steps.",
+      "expected_output": "Python code with TrustSet using RLUSD hex currency code and issuer, then Payment using IssuedCurrencyAmount. Both use submit_and_wait. Trust line noted as one-time setup.",
+      "files": [],
+      "expectations": [
+        "Includes a TrustSet transaction to establish the RLUSD trust line",
+        "Uses IssuedCurrencyAmount for the RLUSD payment amount",
+        "References the RLUSD hex currency code (524C555344000000000000000000000000000000) or notes it must be confirmed",
+        "Uses submit_and_wait for both the TrustSet and Payment transactions",
+        "Makes clear the trust line is a one-time setup step",
+        "Does not pass raw string 'RLUSD' as currency without noting the hex encoding requirement"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm building a compliance-aware payment agent on XRPL. Every payment my agent makes needs to be traceable — I want to tag all agent transactions with a source tag, and embed the agent ID, session ID, and invoice ID in the transaction so I can correlate on-chain activity with my app logs. Show me Python code that sends 30 XRP with this audit metadata attached.",
+      "expected_output": "Python code with source_tag integer on Payment, hex-encoded JSON Memo containing agent_id/session_id/invoice_id, using submit_and_wait and xrp_to_drops from xrpl.utils.",
+      "files": [],
+      "expectations": [
+        "Sets source_tag to an integer on the Payment transaction",
+        "Includes a Memos field with a Memo object containing memo_data",
+        "Hex-encodes the memo data (using base64.b16encode or similar)",
+        "The memo content includes multiple fields (agent ID, session ID, and at least one task/invoice identifier)",
+        "Uses submit_and_wait for transaction submission",
+        "Uses xrp_to_drops for the XRP amount"
+      ]
+    }
+  ]
+}
