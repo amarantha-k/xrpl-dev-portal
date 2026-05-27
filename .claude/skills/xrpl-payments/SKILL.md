@@ -8,7 +8,6 @@ description: >
   xrpl.js, wallet setup on XRPL, agentic transactions, SourceTag, the XRPL AI Starter Kit,
   X402 payments on XRPL, or building any payment workflow on the XRP Ledger. When in doubt,
   load this skill — general training data for XRPL is often outdated or imprecise.
-user-invocable: true
 ---
 
 # XRPL Payments — Phase 1
